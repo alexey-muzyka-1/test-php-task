@@ -1,31 +1,27 @@
-## Installation
+1. `make init` - установить проект
+2. `make sh` - войти в контейнер
+3. `make app-install && make app-test-install` - установить фикстуры для обычной и тестовой бд
+4. `make requirements` - прогнать линтеры и тест
 
-Clone project from zip archive
+### Токен
 
-With docker:
+Сделал токен `app-auth` (`APP_AUTH`), который вставляется в header.
+После этого все запросы будут работать
 
-> Make sure you have docker & docker-compose installed (https://docs.docker.com/get-docker/).
+### Что сделано
 
-```bash
-docker-compose up -d
-docker-compose exec -T php composer install --no-interaction
-docker-compose exec -T php php ./bin/console cache:clear --no-warmup
-docker-compose exec -T php php ./bin/console cache:warmup
-docker-compose exec -T php php ./bin/console doctrine:migrations:migrate --no-interaction
-```
+То что в задании: команда + 4 апи эндпоинта.
+___
 
-This will start all the required services (check docker-compose.yml for the list of services), clear cache & apply
-migrations.
+Дополнительно навесил Resolver чтобы парсить ДТО для POST/PUT запросов (подразумевается,
+что запросы в JSON. Проверки на этот счёт уже не добавлял).
 
-Without Docker:
+Валидаторы и стандартизаторы для ошибков. `Shared/Infrastructure/Http/Subscriber`. 
+Все ошибки приходят в одном формате + в нужные статус коды траслируются выбрасываемые exceptions 
 
-- Install PostgreSQL or other database
-- Install PHP and required dependencies for sql, etc (see .docker/php/Dockerfile for list of dependencies)
-- Install & configure Nginx or Apache
-- Make sure you change environment variables in `.env` file
+В остальном делал около Rich Model, но чтобы вписаться по времени хотя бы +- :)
+### Тесты
 
-## Run Application
-
-See application be URL: [http://localhost:10000](http://localhost:10000).
-
-If port `10000` doesn't work, check `APP_PORT` variable in `.env` for the correct port.  
+Добавил пару юнит тестов. Функциональные уже было впадлу писать, 
+так как с копированием абстракций из своих проектов сам себе увеличил время выполнения
+задания и вышел за пределы 2 часов). Решил остановиться

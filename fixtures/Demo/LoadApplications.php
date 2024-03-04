@@ -16,6 +16,8 @@ class LoadApplications extends DemoFixture
         $app1 = new Application('app', new Url('https://app.com'));
         $app2 = new Application('app', new Url('https://app2.com'));
 
+        $this->addReference('app1', $app1);
+
         $manager->persist($app1);
         $manager->persist($app2);
 
