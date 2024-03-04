@@ -8,6 +8,7 @@ use App\Core\Domain\ValueObject\Name;
 use App\Shared\Domain\Entity\Trait\Timestamps;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 #[ORM\Table(name: 'users')]
 #[ORM\UniqueConstraint(name: 'unique_users_application_email_address', columns: ['application_id', 'email'])]
@@ -33,10 +34,69 @@ class User
     #[ORM\JoinColumn(nullable: false)]
     private Application $application;
 
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'childSkills')]
+    private ?self $parent = null;
+
     #[ORM\ManyToOne(targetEntity: UserStatus::class)]
     #[ORM\JoinColumn(nullable: false)]
     private UserStatus $status;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $blockedAt = null;
+
+    public function __construct(
+        Application $application,
+        string $email,
+        string $password,
+        Name $name,
+        ?self $parent = null
+    )
+    {
+        if (null !== $parent && $parent->isChild()) {
+            throw new \DomainException('Cannot use nested user as parent.');
+        }
+
+        $this->id = Uuid::uuid4()->toString();
+
+        $this->application = $application;
+
+        $this->email = $email;
+        $this->password = $password;
+        $this->name = $name;
+        $this->status = UserStatus::inActive();
+        $this->parent = $parent;
+
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status->isInActive();
+    }
+
+    public function isChild(): bool
+    {
+        return null !== $this->parent;
+    }
+
+    public function update(Name $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function block(): void
+    {
+        if ($this->status->isInBlocked()) {
+            throw new \DomainException('User already blocked');
+        }
+
+        $this->status = UserStatus::inBlocked();
+        $this->blockedAt = new DateTimeImmutable();
+    }
 }
