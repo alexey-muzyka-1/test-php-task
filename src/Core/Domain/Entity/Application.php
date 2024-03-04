@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Entity;
 
+use App\Core\Domain\ValueObject\Name;
 use App\Shared\Domain\Entity\Trait\Timestamps;
 use App\Shared\Domain\ValueObject\Url;
 use DateTimeImmutable;
@@ -45,6 +46,21 @@ class Application
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function registerNewUser(
+        string $email,
+        string $password,
+        Name $name,
+        ?self $parent = null
+    ): User {
+        return new User(
+            $this,
+            $email,
+            $password,
+            $name,
+            $parent
+        );
     }
 
     public function getName(): string

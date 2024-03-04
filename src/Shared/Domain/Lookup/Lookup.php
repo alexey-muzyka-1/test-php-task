@@ -18,7 +18,7 @@ abstract class Lookup implements LookupInterface
     protected int $id;
 
     #[ORM\Column(type: 'string', length: Lookup::SYSNAME_MAX_LENGTH, unique: true)]
-    private string $sysName;
+    protected string $sysName;
 
     public function __construct(string $sysName)
     {

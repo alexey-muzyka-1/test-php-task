@@ -110,6 +110,7 @@ class User
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'email' => $this->email,
             'name' => $this->name->getFullName(),
             'parent' => $this->parent?->getId(),

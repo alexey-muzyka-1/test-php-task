@@ -36,6 +36,7 @@ class UserTest extends TestCase
         $user = UserBuilder::createAny($application)->buildForUnitTest();
 
         $expectedArray = [
+            'id' => $user->getId(),
             'email' => $user->getEmail(),
             'name' => 'Mike Mike',
             'parent' => null,
@@ -46,6 +47,7 @@ class UserTest extends TestCase
         $childUser = UserBuilder::createAny($application, $user)->buildForUnitTest();
 
         $expectedArray2 = [
+            'id' => $childUser->getId(),
             'email' => $childUser->getEmail(),
             'name' => 'Mike Mike',
             'parent' => $user->getId(),
