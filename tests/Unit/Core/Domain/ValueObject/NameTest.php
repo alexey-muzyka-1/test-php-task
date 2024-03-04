@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Core\Domain\ValueObject;
 
-use App\Core\Domain\ValueObject\User\Name;
+use App\Core\Domain\ValueObject\Name;
 use PHPUnit\Framework\TestCase;
 
 class NameTest extends TestCase

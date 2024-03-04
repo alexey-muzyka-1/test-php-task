@@ -37,9 +37,6 @@ PHPLINT_ARGS=-c tools/lint/phplint.yml
 PHP_CS_FIXER=vendor/bin/php-cs-fixer fix
 PHP_CS_FIXER_ARGS=--cache-file=var/cache/.php_cs.cache --verbose --config=tools/csfixer/.php-cs-fixer.php --allow-risky=yes
 
-# PHPUnit
-PHPUNIT=-c tools/phpunit
-
 app-install: ## Install Api project
 	$(DISABLE_XDEBUG) bin/console doctrine:schema:update --complete --force
 	$(DISABLE_XDEBUG) bin/console doctrine:fixtures:load --group=Required --group=Demo -n
@@ -65,6 +62,6 @@ cs-fix: ## Runs code style check with fix
 	LC_ALL=C sort -u .gitignore -o .gitignore
 
 tests: ## Runs All tests
-	bin/phpunit $(PHPUNIT)
+	bin/phpunit -c tools/phpunit
 
 requirements: lint tests

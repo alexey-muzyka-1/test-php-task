@@ -8,6 +8,7 @@ use App\Core\Domain\ValueObject\Name;
 use App\Shared\Domain\Entity\Trait\Timestamps;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 use Ramsey\Uuid\Uuid;
 
 #[ORM\Table(name: 'users')]
@@ -50,10 +51,9 @@ class User
         string $password,
         Name $name,
         ?self $parent = null
-    )
-    {
+    ) {
         if (null !== $parent && $parent->isChild()) {
-            throw new \DomainException('Cannot use nested user as parent.');
+            throw new DomainException('Cannot use nested user as parent.');
         }
 
         $this->id = Uuid::uuid4()->toString();
@@ -66,13 +66,18 @@ class User
         $this->status = UserStatus::inActive();
         $this->parent = $parent;
 
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
     public function isActive(): bool
@@ -88,12 +93,14 @@ class User
     public function update(Name $name): void
     {
         $this->name = $name;
+
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function block(): void
     {
         if ($this->status->isInBlocked()) {
-            throw new \DomainException('User already blocked');
+            throw new DomainException('User already blocked');
         }
 
         $this->status = UserStatus::inBlocked();
@@ -107,5 +114,10 @@ class User
             'name' => $this->name->getFullName(),
             'parent' => $this->parent?->getId(),
         ];
+    }
+
+    public function getBlockedAt(): ?DateTimeImmutable
+    {
+        return $this->blockedAt;
     }
 }

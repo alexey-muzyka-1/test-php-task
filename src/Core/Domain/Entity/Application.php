@@ -6,6 +6,7 @@ namespace App\Core\Domain\Entity;
 
 use App\Shared\Domain\Entity\Trait\Timestamps;
 use App\Shared\Domain\ValueObject\Url;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -37,8 +38,8 @@ class Application
         $this->url = $url;
         $this->apiKey = Uuid::uuid6()->toString();
 
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function getId(): string

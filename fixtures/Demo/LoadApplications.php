@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures\Demo;
 
-
 use App\Core\Domain\Entity\Application;
 use App\DataFixtures\DemoFixture;
 use App\Shared\Domain\ValueObject\Url;

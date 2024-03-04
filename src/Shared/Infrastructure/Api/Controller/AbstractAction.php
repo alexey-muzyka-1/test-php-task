@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Api\Controller;
 
-
 use App\Core\Domain\Entity\Application;
 use App\Core\Infrastructure\Repository\ApplicationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +14,6 @@ class AbstractAction
     public function __construct(
         private readonly ApplicationRepository $applicationRepository
     ) {
-
     }
 
     protected function getMyApplication(Request $request): Application

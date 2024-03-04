@@ -17,8 +17,7 @@ class GetUserAction extends AbstractAction
         string $id,
         Request $request,
         UserRepository $userRepository,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $application = $this->getMyApplication($request);
 
         $user = $userRepository->getActive($id, $application);

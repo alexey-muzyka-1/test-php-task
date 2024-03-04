@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Required;
+namespace App\DataFixtures\Required;
 
 use App\Core\Domain\Entity\UserStatus;
 use App\DataFixtures\RequiredFixture;
