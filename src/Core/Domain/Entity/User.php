@@ -99,4 +99,13 @@ class User
         $this->status = UserStatus::inBlocked();
         $this->blockedAt = new DateTimeImmutable();
     }
+
+    public function toArray(): array
+    {
+        return [
+            'email' => $this->email,
+            'name' => $this->name->getFullName(),
+            'parent' => $this->parent?->getId(),
+        ];
+    }
 }
